@@ -1,70 +1,136 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Drive With Friends Download</title>
-    <style>
-        body {
-            background: linear-gradient(to bottom right, #1e3c72, #2a5298);
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
+<meta charset="UTF-8">
+<title>Drive With Friends Download</title>
 
-        h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
+<style>
+body {
+    background: linear-gradient(to bottom right, #1e3c72, #2a5298);
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    padding: 50px;
+}
 
-        h4 {
-            font-size: 20px;
-            margin-bottom: 40px;
-            color: #cce0ff;
-        }
+h1 {
+    font-size: 48px;
+}
 
-        a.download-button {
-            display: inline-block;
-            background-color: #00c853;
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-            padding: 20px 40px;
-            border-radius: 12px;
-            text-decoration: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transition: 0.2s;
-        }
+h4 {
+    font-size: 20px;
+    margin-bottom: 40px;
+    color: #cce0ff;
+}
 
-        a.download-button:hover {
-            background-color: #00e676;
-            transform: scale(1.05);
-        }
+select {
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+}
 
-        p {
-            font-size: 16px;
-            margin-top: 30px;
-            color: #cce0ff;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    </style>
+.download-button {
+    display: none;
+    margin-top: 30px;
+    background-color: #00c853;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 20px 40px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: 0.2s;
+}
+
+.download-button:hover {
+    background-color: #00e676;
+    transform: scale(1.05);
+}
+
+p {
+    font-size: 16px;
+    margin-top: 30px;
+    color: #cce0ff;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Info {
+    border: 3px solid #00e676;
+    background-color: rgba(255,255,255,0.08);
+    padding: 25px;
+    border-radius: 12px;
+    width: 500px;
+    margin: 40px auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+</style>
+
+<script>
+
+function updateDownload() {
+
+    const select = document.getElementById("version");
+    const button = document.getElementById("downloadBtn");
+
+    if(select.value === "DT1.0"){
+        button.href = "https://github.com/SantiHehe/DriveWithFriends/releases/tag/DemoTest1.0";
+        button.innerText = "Download Demo v1.0";
+        button.style.display = "inline-block";
+    }
+
+    else if(select.value === "DT2.0"){
+        button.href = "https://github.com/SantiHehe/DriveWithFriends/releases/tag/Alpha";
+        button.innerText = "Download Demo Test v2.0 (Not Released Yet)";
+        button.style.display = "inline-block";
+    }
+
+    else if(select.value === "DT3.0"){
+        button.href = "https://github.com/SantiHehe/DriveWithFriends/releases/tag/Experimental";
+        button.innerText = "Download Demo Test v.3.0 (Not Released Yet)";
+        button.style.display = "inline-block";
+    }
+
+    else{
+        button.style.display = "none";
+    }
+
+}
+
+</script>
+
 </head>
+
 <body>
 
-    <h1>Drive With Friends</h1>
-    <h4>Download the game below and start driving with friends!</h4>
+<h1>Drive With Friends</h1>
+<h4>Select a game version</h4>
 
-    <!-- Replace the href with your GitHub Release zip link -->
-    <a href="https://github.com/SantiHehe/DriveWithFriends/releases/tag/DemoTest1.0" class="download-button" download>
-        Download Game
-    </a>
+<select id="version" onchange="updateDownload()">
+<option value="">Choose version...</option>
+<option value="DT1.0">Demo Test v1.0</option>
+<option value="DT2.0">Demo Test v2.0</option>
+<option value="DT3.0">Demo Test v3.0</option>
+</select>
 
-    <p>Windows may warn that this file is unsafe — that's normal for indie games without a license :)</p>
-	<p>To download click that button and find the first .zip file listed and click on it. It will then download. After that, navigate to where you saved that .zip and unzip it and run the .exe. Windows will say that the file is unsafe, but ignore it. This should work!</p>
-	<p>This game is in its very early development. There will be many thing that don't work and there will also be many bugs. Thanks for testing though!</p>
-    <p>Have fun driving!</p>
+<br>
 
+<a id="downloadBtn" class="download-button" href="#">Download</a>
+
+<div class="Info"> 
+<p>Windows may warn that this file is unsafe — that's normal for indie games without a license :)</p>
+
+<p>Download the .zip file, unzip it, and run the .exe.</p>
+
+<p>This game is in early development. Expect bugs and unfinished features.</p>
+
+<p>Have fun driving!</p>
+</div>
+<br><br><br><br><br>
+<p>Created by SantiHehe :D</p>
 </body>
 </html>
