@@ -1,136 +1,754 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Drive With Friends Download</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive With Friends - Download</title>
+    <style>
+        :root {
+            --primary-gradient-start: #1e3c72;
+            --primary-gradient-end: #2a5298;
+            --success-color: #00c853;
+            --success-color-hover: #00e676;
+            --text-primary: white;
+            --text-secondary: #cce0ff;
+            --border-color: #00e676;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --spacing-unit: 1rem;
+        }
 
-<style>
-body {
-    background: linear-gradient(to bottom right, #1e3c72, #2a5298);
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
-    padding: 50px;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-h1 {
-    font-size: 48px;
-}
+        body {
+            background: linear-gradient(
+                to bottom right,
+                var(--primary-gradient-start),
+                var(--primary-gradient-end)
+            );
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: calc(var(--spacing-unit) * 3);
+        }
 
-h4 {
-    font-size: 20px;
-    margin-bottom: 40px;
-    color: #cce0ff;
-}
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: calc(var(--spacing-unit) * 1);
+            margin-bottom: calc(var(--spacing-unit) * 3);
+            border-bottom: 2px solid var(--border-color);
+            width: 100%;
+            max-width: 600px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-select {
-    font-size: 20px;
-    padding: 15px;
-    border-radius: 10px;
-    border: none;
-}
+        .nav-tab {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
 
-.download-button {
-    display: none;
-    margin-top: 30px;
-    background-color: #00c853;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    padding: 20px 40px;
-    border-radius: 12px;
-    text-decoration: none;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transition: 0.2s;
-}
+        .nav-tab:hover {
+            color: var(--text-primary);
+        }
 
-.download-button:hover {
-    background-color: #00e676;
-    transform: scale(1.05);
-}
+        .nav-tab.active {
+            color: var(--success-color);
+            border-bottom-color: var(--success-color);
+        }
 
-p {
-    font-size: 16px;
-    margin-top: 30px;
-    color: #cce0ff;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
+        main {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
 
-.Info {
-    border: 3px solid #00e676;
-    background-color: rgba(255,255,255,0.08);
-    padding: 25px;
-    border-radius: 12px;
-    width: 500px;
-    margin: 40px auto;
-    box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-</style>
+        .page-content {
+            display: none;
+        }
 
-<script>
+        .page-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
 
-function updateDownload() {
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-    const select = document.getElementById("version");
-    const button = document.getElementById("downloadBtn");
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: calc(var(--spacing-unit) * 0.5);
+        }
 
-    if(select.value === "DT1.0"){
-        button.href = "https://github.com/SantiHehe/DriveWithFriends/releases/tag/DemoTest1.0";
-        button.innerText = "Download Demo v1.0";
-        button.style.display = "inline-block";
-    }
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: calc(var(--spacing-unit) * 2.5);
+            color: var(--text-secondary);
+        }
 
-    else if(select.value === "DT2.0"){
-        button.href = "https://github.com/SantiHehe/DriveWithFriends/releases/tag/Alpha";
-        button.innerText = "Download Demo Test v2.0 (Not Released Yet)";
-        button.style.display = "inline-block";
-    }
+        /* Download Stats */
+        .download-stats {
+            border: 3px solid var(--border-color);
+            background-color: rgba(0, 200, 83, 0.1);
+            padding: calc(var(--spacing-unit) * 1.5);
+            border-radius: 12px;
+            margin: calc(var(--spacing-unit) * 2) 0;
+            box-shadow: 0 0 20px var(--shadow-color);
+        }
 
-    else if(select.value === "DT3.0"){
-        button.href = "https://github.com/SantiHehe/DriveWithFriends/releases/tag/Experimental";
-        button.innerText = "Download Demo Test v.3.0 (Not Released Yet)";
-        button.style.display = "inline-block";
-    }
+        .stats-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: calc(var(--spacing-unit) * 0.5);
+        }
 
-    else{
-        button.style.display = "none";
-    }
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: calc(var(--spacing-unit) * 0.5);
+        }
 
-}
+        .stats-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
 
-</script>
+        .version-selector {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--spacing-unit) * 1.5);
+            margin-bottom: calc(var(--spacing-unit) * 2);
+        }
 
+        select {
+            font-size: 1.25rem;
+            padding: calc(var(--spacing-unit) * 0.9375);
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease;
+        }
+
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.3);
+        }
+
+        .platform-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--spacing-unit) * 1);
+            margin-bottom: calc(var(--spacing-unit) * 2);
+        }
+
+        .platform-row {
+            display: flex;
+            gap: calc(var(--spacing-unit) * 0.75);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .platform-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .download-button {
+            background-color: var(--success-color);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: bold;
+            padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5);
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .download-button:hover:not(:disabled) {
+            background-color: var(--success-color-hover);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px var(--shadow-color);
+        }
+
+        .download-button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .download-button:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .unavailable-message {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: calc(var(--spacing-unit) * 0.25);
+            min-height: 1.2rem;
+        }
+
+        .info-container {
+            border: 3px solid var(--border-color);
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: calc(var(--spacing-unit) * 1.5625);
+            border-radius: 12px;
+            margin: calc(var(--spacing-unit) * 2.5) 0;
+            box-shadow: 0 0 20px var(--shadow-color);
+        }
+
+        .info-container p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: calc(var(--spacing-unit) * 1.25);
+        }
+
+        .info-container p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Changelog Styles */
+        .changelog-item {
+            border-left: 3px solid var(--border-color);
+            padding-left: calc(var(--spacing-unit) * 1.5);
+            margin-bottom: calc(var(--spacing-unit) * 2);
+            text-align: left;
+        }
+
+        .changelog-version {
+            color: var(--success-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: calc(var(--spacing-unit) * 0.5);
+        }
+
+        .changelog-date {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: calc(var(--spacing-unit) * 0.5);
+        }
+
+        .changelog-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Feedback Form Styles */
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--spacing-unit) * 1);
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: calc(var(--spacing-unit) * 0.5);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: calc(var(--spacing-unit) * 0.75);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.3);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .feedback-submit {
+            background-color: var(--success-color);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: bold;
+            padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1.5);
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: calc(var(--spacing-unit) * 1);
+        }
+
+        .feedback-submit:hover {
+            background-color: var(--success-color-hover);
+            transform: scale(1.05);
+        }
+
+        .feedback-submit:active {
+            transform: scale(0.98);
+        }
+
+        .feedback-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .form-message {
+            margin-top: calc(var(--spacing-unit) * 1);
+            padding: calc(var(--spacing-unit) * 0.75);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .form-message.success {
+            background-color: rgba(0, 200, 83, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+            display: block;
+        }
+
+        .form-message.error {
+            background-color: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+            display: block;
+        }
+
+        .feedback-note {
+            margin-top: calc(var(--spacing-unit) * 1.5);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        footer {
+            margin-top: calc(var(--spacing-unit) * 3);
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1rem;
+            }
+
+            .nav-tabs {
+                gap: calc(var(--spacing-unit) * 0.5);
+            }
+
+            .nav-tab {
+                padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 1);
+                font-size: 0.9rem;
+            }
+
+            select {
+                font-size: 1rem;
+                padding: calc(var(--spacing-unit) * 0.75);
+            }
+
+            .download-button {
+                font-size: 0.9rem;
+                padding: calc(var(--spacing-unit) * 0.6) calc(var(--spacing-unit) * 1.2);
+            }
+
+            .platform-row {
+                flex-direction: column;
+            }
+
+            .platform-item {
+                min-width: auto;
+            }
+
+            .stats-number {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="home">Home</button>
+        <button class="nav-tab" data-tab="download">Download</button>
+        <button class="nav-tab" data-tab="changelog">Change Logs</button>
+        <button class="nav-tab" data-tab="feedback">Feedback</button>
+    </div>
 
-<h1>Drive With Friends</h1>
-<h4>Select a game version</h4>
+    <main>
+        <!-- Home Page -->
+        <div class="page-content active" id="home">
+            <h1 id="page-title">Drive With Friends</h1>
+            <h2 id="page-subtitle">Welcome to the official download page</h2>
 
-<select id="version" onchange="updateDownload()">
-<option value="">Choose version...</option>
-<option value="DT1.0">Demo Test v1.0</option>
-<option value="DT2.0">Demo Test v2.0</option>
-<option value="DT3.0">Demo Test v3.0</option>
-</select>
+            <!-- Download Stats -->
+            <div class="download-stats">
+                <div class="stats-label">📊 Community Downloads</div>
+                <div class="stats-number" id="download-count">0</div>
+                <div class="stats-subtitle">Join thousands of players!</div>
+            </div>
 
-<br>
+            <section class="info-container" id="info-container"></section>
+        </div>
 
-<a id="downloadBtn" class="download-button" href="#">Download</a>
+        <!-- Download Page -->
+        <div class="page-content" id="download">
+            <h1>Download</h1>
+            <h2 id="download-subtitle">Select a game version</h2>
 
-<div class="Info"> 
-<p>Windows may warn that this file is unsafe — that's normal for indie games without a license :)</p>
+            <!-- Download Stats on Download Page -->
+            <div class="download-stats">
+                <div class="stats-label">📊 Community Downloads</div>
+                <div class="stats-number" id="download-count-2">0</div>
+                <div class="stats-subtitle">Join thousands of players!</div>
+            </div>
 
-<p>Download the .zip file, unzip it, and run the .exe.</p>
+            <div class="version-selector">
+                <select id="version-select" aria-label="Game version selection"></select>
 
-<p>This game is in early development. Expect bugs and unfinished features.</p>
+                <div class="platform-buttons" id="platform-buttons" style="display: none;">
+                    <div class="platform-row">
+                        <div class="platform-item">
+                            <button class="download-button" data-platform="windows"></button>
+                            <div class="unavailable-message" data-platform="windows"></div>
+                        </div>
+                        <div class="platform-item">
+                            <button class="download-button" data-platform="mac"></button>
+                            <div class="unavailable-message" data-platform="mac"></div>
+                        </div>
+                        <div class="platform-item">
+                            <button class="download-button" data-platform="linux"></button>
+                            <div class="unavailable-message" data-platform="linux"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<p>Have fun driving!</p>
-</div>
-<br><br><br><br><br>
-<p>Created by SantiHehe :D</p>
+        <!-- Changelog Page -->
+        <div class="page-content" id="changelog">
+            <h1>Change Logs</h1>
+            <div id="changelog-container"></div>
+        </div>
+
+        <!-- Feedback Page -->
+        <div class="page-content" id="feedback">
+            <h1>Feedback</h1>
+            <h2>We'd love to hear from you!</h2>
+            <form class="feedback-form" id="feedback-form" action="https://formspree.io/f/xnjggozj" method="POST">
+                <div class="form-group">
+                    <label for="feedback-name">Name</label>
+                    <input type="text" id="feedback-name" name="name" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-email">Email</label>
+                    <input type="email" id="feedback-email" name="email" placeholder="Your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-message">Message</label>
+                    <textarea id="feedback-message" name="message" placeholder="Share your feedback..." required></textarea>
+                </div>
+                <button type="submit" class="feedback-submit">Send Feedback</button>
+                <div class="form-message" id="form-message"></div>
+                <p class="feedback-note">I will try to get back to you as soon as possible!</p>
+            </form>
+        </div>
+
+        <footer>
+            <p id="footer-text">Created by SantiHehe :D</p>
+        </footer>
+    </main>
+
+    <script>
+        // ============================================
+        // EDIT THESE SETTINGS
+        // ============================================
+
+        const PAGE_TITLE = 'Drive With Friends';
+        const PAGE_SUBTITLE = 'Welcome to the official download page';
+        const FOOTER_TEXT = 'Created by SantiHehe :D';
+
+        // Set your download count here
+        const TOTAL_DOWNLOADS = "Lol idk yet :)";
+
+        const INFO_MESSAGES = [
+            'Welcome to Drive With Friends! This is an indie racing game where you can compete with your friends.',
+            'Experience exciting multiplayer racing action with a variety of tracks and vehicles.',
+            'This game is in early development. Expect bugs and unfinished features.',
+            'Have fun driving!'
+        ];
+
+        const UNAVAILABLE_MESSAGE = 'This Version is not Available';
+
+        const PLATFORM_EMOJIS = {
+            windows: '🪟',
+            mac: '🍎',
+            linux: '🐧'
+        };
+
+        const PLATFORM_NAMES = {
+            windows: 'Windows',
+            mac: 'Mac',
+            linux: 'Linux'
+        };
+
+        // CHANGELOG ENTRIES
+        const CHANGELOGS = [
+            {
+                version: 'Demo Test v3.0',
+                date: 'Release TBD',
+                changes: 'This release will include possible online tests.'
+            },
+            {
+                version: 'Demo Test v2.0',
+                date: 'Release TBD',
+                changes: 'This release will include a pause menu, updated main menu, and the ability to change cars.'
+            },
+            {
+                version: 'Demo Test v1.0.',
+                date: 'March 16, 2026',
+                changes: 'This is the first version of DriveWithFriends. The various things added include a basic car, an empty terrain, one music track, and a basic main menu.'
+            }
+        ];
+
+        // VERSION CONFIGURATIONS
+        const VERSIONS = {
+            'DT1.0': {
+                label: 'Demo Test v1.0',
+                platforms: {
+                    windows: {
+                        enabled: true,
+                        url: 'https://github.com/SantiHehe/DriveWithFriends/releases/tag/DemoTest1.0'
+                    },
+                    mac: {
+                        enabled: false,
+                        url: ''
+                    },
+                    linux: {
+                        enabled: false,
+                        url: ''
+                    }
+                }
+            },
+            'DT2.0': {
+                label: 'Demo Test v2.0',
+                platforms: {
+                    windows: {
+                        enabled: false,
+                        url: 'about:blank'
+                    },
+                    mac: {
+                        enabled: false,
+                        url: 'about:blank'
+                    },
+                    linux: {
+                        enabled: false,
+                        url: 'about:blank'
+                    }
+                }
+            },
+            'DT3.0': {
+                label: 'Demo Test v3.0',
+                platforms: {
+                    windows: {
+                        enabled: false,
+                        url: 'about:blank'
+                    },
+                    mac: {
+                        enabled: false,
+                        url: 'about:blank'
+                    },
+                    linux: {
+                        enabled: false,
+                        url: 'about:blank'
+                    }
+                }
+            }
+        };
+
+        // ============================================
+        // END OF SETTINGS
+        // ============================================
+
+        // Initialize the page
+        function initializePage() {
+            // Set page text
+            document.getElementById('page-title').textContent = PAGE_TITLE;
+            document.getElementById('page-subtitle').textContent = PAGE_SUBTITLE;
+            document.getElementById('footer-text').textContent = FOOTER_TEXT;
+
+            // Set download counts
+            document.getElementById('download-count').textContent = TOTAL_DOWNLOADS.toLocaleString();
+            document.getElementById('download-count-2').textContent = TOTAL_DOWNLOADS.toLocaleString();
+
+            // Build info messages
+            const infoContainer = document.getElementById('info-container');
+            infoContainer.innerHTML = INFO_MESSAGES.map(msg => `<p>${msg}</p>`).join('');
+
+            // Build changelogs
+            buildChangelogs();
+
+            // Populate version select dropdown
+            populateVersionSelect();
+
+            // Setup tab navigation
+            setupTabNavigation();
+
+            // Setup event listeners
+            document.getElementById('version-select').addEventListener('change', updatePlatformButtons);
+            document.getElementById('feedback-form').addEventListener('submit', handleFeedbackSubmit);
+        }
+
+        /**
+         * Populates the version select dropdown
+         */
+        function populateVersionSelect() {
+            const select = document.getElementById('version-select');
+            select.innerHTML = '<option value="">Choose version...</option>';
+
+            Object.entries(VERSIONS).forEach(([versionId, versionData]) => {
+                const option = document.createElement('option');
+                option.value = versionId;
+                option.textContent = versionData.label;
+                select.appendChild(option);
+            });
+        }
+
+        /**
+         * Builds the changelog display
+         */
+        function buildChangelogs() {
+            const container = document.getElementById('changelog-container');
+            container.innerHTML = CHANGELOGS.map(log => `
+                <div class="changelog-item">
+                    <div class="changelog-version">${log.version}</div>
+                    <div class="changelog-date">${log.date}</div>
+                    <div class="changelog-text">${log.changes}</div>
+                </div>
+            `).join('');
+        }
+
+        /**
+         * Sets up tab navigation
+         */
+        function setupTabNavigation() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            const pages = document.querySelectorAll('.page-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.getAttribute('data-tab');
+
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Update active page
+                    pages.forEach(page => page.classList.remove('active'));
+                    document.getElementById(tabName).classList.add('active');
+                });
+            });
+        }
+
+        /**
+         * Updates the platform buttons based on selected version
+         */
+        function updatePlatformButtons() {
+            const selectedVersion = document.getElementById('version-select').value;
+            const platformButtons = document.getElementById('platform-buttons');
+
+            if (!selectedVersion || !VERSIONS[selectedVersion]) {
+                platformButtons.style.display = 'none';
+                return;
+            }
+
+            platformButtons.style.display = 'block';
+            const versionData = VERSIONS[selectedVersion];
+
+            ['windows', 'mac', 'linux'].forEach(platform => {
+                const platformConfig = versionData.platforms[platform];
+                const button = document.querySelector(`.download-button[data-platform="${platform}"]`);
+                const messageDiv = document.querySelector(`.unavailable-message[data-platform="${platform}"]`);
+
+                const emoji = PLATFORM_EMOJIS[platform];
+                const name = PLATFORM_NAMES[platform];
+                button.textContent = `${emoji} ${name}`;
+                button.disabled = !platformConfig.enabled;
+                button.title = !platformConfig.enabled ? UNAVAILABLE_MESSAGE : '';
+
+                messageDiv.textContent = !platformConfig.enabled ? UNAVAILABLE_MESSAGE : '';
+
+                button.onclick = platformConfig.enabled ? () => {
+                    window.location.href = platformConfig.url;
+                } : null;
+            });
+        }
+
+        /**
+         * Handles feedback form submission
+         */
+        function handleFeedbackSubmit(e) {
+            const form = document.getElementById('feedback-form');
+            const messageDiv = document.getElementById('form-message');
+            const submitBtn = form.querySelector('.feedback-submit');
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            messageDiv.className = 'form-message';
+            messageDiv.textContent = '';
+
+            // The form will submit to Formspree automatically
+            // This just provides user feedback
+        }
+
+        // Start the page
+        initializePage();
+    </script>
 </body>
 </html>
